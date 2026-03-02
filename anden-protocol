@@ -1,0 +1,150 @@
+// [UPDATE 02/03] this is all currently being explored and changes may apply
+# Andén Protocol
+
+**Architecture specifications and design documentation for Andén OS.**
+
+This repository contains the technical design, protocol specifications, and architectural decisions behind Andén OS — the infrastructure layer for Digital Special Economic Zones (DSEZs).
+
+> This is a living document. Specifications evolve as we build and validate with governments, partners, and the developer community.
+
+---
+
+## What this repo is
+
+`anden-protocol` is the canonical reference for how Andén OS works under the hood:
+
+- System architecture and component design
+- Protocol interfaces between layers
+- Data models for entities, compliance records, and zone operations
+- Decision logs explaining *why* we built things the way we did
+- Integration specs for third-party modules and service providers
+
+If you're a developer, protocol team, or government partner trying to understand how to build on or integrate with Andén — start here.
+
+---
+
+## Core Design Principles
+
+**1. Rules as code**
+Regulatory logic should be executable and auditable, not stored in PDFs. Every compliance rule in Andén OS can be inspected, versioned, and upgraded like software.
+
+**2. Composability over monoliths**
+Each module (identity, incorporation, treasury, compliance) is independently deployable. Zones can adopt the full stack or integrate specific components into existing infrastructure.
+
+**3. Interoperability first**
+Andén is not building a walled garden. Zones powered by Andén OS can connect to each other and to external protocols through standardized interfaces.
+
+**4. Onchain auditability**
+Critical state — entity registrations, compliance events, capital movements — is anchored onchain for transparency and cross-border verifiability.
+
+**5. Government-grade reliability**
+Public infrastructure requires higher trust bars than consumer software. Architecture decisions prioritize auditability, recoverability, and institutional-grade security.
+
+---
+
+## System Architecture
+
+Andén OS is organized into five interconnected layers:
+```
+┌─────────────────────────────────────────────┐
+│              USE CASE LAYER                 │
+│   Banks · VCs · Networks · Service Providers│
+├─────────────────────────────────────────────┤
+│             COMPONENT LAYER                 │
+│  KYB/KYC · Tokenization · Treasury · IP     │
+├─────────────────────────────────────────────┤
+│            OPERATIONS LAYER                 │
+│  Analytics · Supervision · Governance       │
+├─────────────────────────────────────────────┤
+│            DEPLOYMENT LAYER                 │
+│  Zone Kits · Legal Playbooks · Onboarding   │
+├─────────────────────────────────────────────┤
+│          INFRASTRUCTURE LAYER               │
+│  Entity Registry · Compliance SDKs · Auth   │
+└─────────────────────────────────────────────┘
+                      │
+              Onchain Auditability
+         (TBD · Blockchain Anchoring)
+```
+
+---
+
+## Modules
+
+### Entity Registry
+The foundational primitive. Manages digital incorporation, entity lifecycle, and zone membership. Each entity gets a unique onchain identifier that persists across jurisdictions.
+
+### Identity & Compliance
+KYC/KYB/AML flows powered by Sumsub integration. Eligibility checks, sanctions screening, and reporting automation. Compliance rules are versioned and upgradeable without zone downtime.
+
+### Capital Formation
+Compliant tokenized fundraising and treasury rails. Designed to support token issuance under Argentina's CNV Res. 1081/25 sandbox framework and equivalent regimes.
+
+### Operator Dashboard
+Government-facing interface for zone administrators. Real-time entity monitoring, compliance reporting, fee collection, and rule management.
+
+### Component Marketplace *(V3)*
+Open interface for third parties to publish and distribute zone modules. Revenue-sharing model between Andén and component builders.
+
+---
+
+## Integration Points
+
+Andén OS is designed to connect with:
+
+- **Identity providers**: i.e. Sumsub, World ID, and compatible KYC/KYB providers
+- **Blockchain networks**: i.e. EVM-compatible chains, TBD for institutional orchestration
+- **Financial rails**: i.e. Stablecoin treasuries, Gnosis Safe, and compliant DeFi protocols
+- **Legal infrastructure**: i.e. Argentina's FTZ registry and Knowledge Economy Law compliance APIs
+
+---
+
+## Repository Structure
+```
+anden-protocol/
+├── architecture/        # System design diagrams and layer specs
+├── modules/             # Per-module interface and data model specs
+│   ├── entity-registry/
+│   ├── identity-compliance/
+│   ├── capital-formation/
+│   └── operator-dashboard/
+├── decisions/           # Architecture Decision Records (ADRs)
+├── integrations/        # Third-party integration specs
+└── glossary.md          # Terminology and definitions
+```
+
+---
+
+## Status
+
+This repository is actively being developed alongside the Argentina MVP. Expect frequent updates through Q3 2026 as specifications are finalized ahead of Zone 1 launch.
+
+| Module | Spec Status |
+|---|---|
+| Entity Registry | 🔨 Draft in progress |
+| Identity & Compliance | 🔨 Draft in progress |
+| Capital Formation | 📅 Planned Q2 2026 |
+| Operator Dashboard | 📅 Planned Q2 2026 |
+| Component Marketplace | 📅 Planned Q4 2026 |
+
+---
+
+## Contributing
+
+We welcome input from developers, protocol teams, and jurisdictions interested in shaping the standard for digital zone infrastructure.
+
+- Open an issue to propose changes or flag inconsistencies
+- Submit a PR with proposed spec updates
+- Reach out directly for deeper collaboration: [hola@anden.xyz](mailto:hola@anden.xyz)
+
+---
+
+## Related Repositories
+
+- [`anden-os`](../anden-os) — Core platform implementation
+- [`anden-sdk`](../anden-sdk) — SDK for zone builders *(coming Q3 2026)*
+- [`anden-docs`](../anden-docs) — Full documentation site *(coming soon)*
+
+---
+
+*Andén Protocol is the technical foundation for programmable jurisdictions. Built for governments, designed for developers.*
