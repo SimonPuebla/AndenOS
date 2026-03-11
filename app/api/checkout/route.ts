@@ -5,9 +5,9 @@ import { createClient } from '@/lib/supabase/server'
 // Price IDs — these should be created in Stripe Dashboard and stored as env vars
 // For POC we compute the price dynamically
 const PRICES: Record<string, number> = {
-  CASO_1: 49000, // USD 490 in cents
-  CASO_3: 49000,
-  CASO_4: 89000,
+  CASO_1: 30000,  // USD 300
+  CASO_3: 60000,  // USD 600 (SAS + ZF $300 + LEC $300)
+  CASO_4: 150000, // USD 1500 (Delaware $500 + SAS + ZF $300 + LEC $300 + gestión)
 }
 const ADVISOR_ADDON = 29000 // USD 290
 

@@ -15,7 +15,7 @@ export default function PagoPage() {
   const [user, setUser] = useState<{ email?: string; id?: string } | null>(null)
 
   const caso = store.structureSelected || store.casoRecomendado || 'CASO_3'
-  const priceBase = caso === 'CASO_4' ? 890 : 490
+  const priceBase = caso === 'CASO_4' ? 1500 : caso === 'CASO_1' ? 300 : 600
   const priceAdvisor = store.advisorMode === 'asesor' ? 290 : 0
   const totalPrice = priceBase + priceAdvisor
 
@@ -112,7 +112,7 @@ export default function PagoPage() {
           <div className="flex justify-between items-start mb-6">
             <div>
               <div className="font-mono text-sm text-cream/50 mb-1">
-                {caso === 'CASO_4' ? 'Delaware + SAS en DEZ + LEC' : 'SAS en DEZ + LEC'}
+                {caso === 'CASO_4' ? 'Delaware + SAS en DEZ + LEC' : caso === 'CASO_1' ? 'SAS simple' : 'SAS en DEZ + LEC'}
               </div>
               <div className="font-mono text-4xl font-bold">
                 USD {totalPrice}
