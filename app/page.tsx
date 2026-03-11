@@ -224,7 +224,7 @@ export default function LandingPage() {
               {
                 step: '03',
                 title: 'Pago único',
-                desc: 'USD 600–1.500 todo incluido. Sin sorpresas ni honorarios extra.',
+                desc: 'USD 500–2.000 todo incluido. Sin sorpresas ni honorarios extra.',
                 time: 'Inmediato',
               },
               {
@@ -258,7 +258,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           <div className="card hover:shadow-[6px_6px_0px_#1A1A2E] transition-shadow">
             <div className="label-mono text-dark/50 mb-2">Startup local · LEC</div>
-            <div className="font-mono text-3xl font-bold mb-1">USD 600</div>
+            <div className="font-mono text-3xl font-bold mb-1">USD 1.500</div>
             <p className="font-sans text-sm text-dark/60 mb-5">
               SAS en DEZ Mendoza + inscripción LEC. Ideal para equipos que facturan en Argentina o LATAM.
             </p>
@@ -287,7 +287,7 @@ export default function LandingPage() {
               Inversión global
             </div>
             <div className="label-mono text-cream/50 mb-2">Delaware + SAS · LEC</div>
-            <div className="font-mono text-3xl font-bold mb-1">USD 1.500</div>
+            <div className="font-mono text-3xl font-bold mb-1">USD 2.000</div>
             <p className="font-sans text-sm text-cream/60 mb-5">
               Estructura dual HoldCo/OpCo para levantar capital de VCs globales. LEC en Argentina.
             </p>
@@ -315,7 +315,7 @@ export default function LandingPage() {
         <p className="text-center font-mono text-sm text-dark/50 mt-6">
           ¿Querés un asesor humano dedicado? <span className="text-dark">+USD 290</span> en cualquier plan.
           <br />
-          <span className="text-dark/40">Solo SAS + ZF (sin LEC): USD 300 · Solo LEC: USD 300</span>
+          <span className="text-dark/40">Solo SAS + ZF (sin LEC): USD 500 · Solo LEC: USD 300</span>
         </p>
       </section>
 

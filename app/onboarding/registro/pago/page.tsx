@@ -15,7 +15,7 @@ export default function PagoPage() {
   const [user, setUser] = useState<{ email?: string; id?: string } | null>(null)
 
   const caso = store.structureSelected || store.casoRecomendado || 'CASO_3'
-  const priceBase = caso === 'CASO_4' ? 1500 : caso === 'CASO_1' ? 300 : 600
+  const priceBase = caso === 'CASO_4' ? 2000 : caso === 'CASO_1' ? 500 : 1500
   const priceAdvisor = store.advisorMode === 'asesor' ? 290 : 0
   const totalPrice = priceBase + priceAdvisor
 
