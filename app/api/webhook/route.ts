@@ -3,9 +3,6 @@ import Stripe from 'stripe'
 import { createClient as createServerClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 function generateExpedienteId() {
   const year = new Date().getFullYear()
   const num = Math.floor(Math.random() * 9000) + 1000
@@ -13,6 +10,11 @@ function generateExpedienteId() {
 }
 
 export async function POST(req: NextRequest) {
+  const stripeKey = process.env.STRIPE_SECRET_KEY
+  if (!stripeKey) return NextResponse.json({ error: 'Stripe no configurado' }, { status: 500 })
+  const stripe = new Stripe(stripeKey)
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
   const body = await req.text()
   const sig = req.headers.get('stripe-signature')!
 

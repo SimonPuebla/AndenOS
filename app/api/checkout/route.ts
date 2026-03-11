@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@/lib/supabase/server'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-
 // Price IDs — these should be created in Stripe Dashboard and stored as env vars
 // For POC we compute the price dynamically
 const PRICES: Record<string, number> = {
@@ -15,6 +13,11 @@ const ADVISOR_ADDON = 29000 // USD 290
 
 export async function POST(req: NextRequest) {
   try {
+    const stripeKey = process.env.STRIPE_SECRET_KEY
+    if (!stripeKey) {
+      return NextResponse.json({ error: 'Stripe no configurado' }, { status: 500 })
+    }
+    const stripe = new Stripe(stripeKey)
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
