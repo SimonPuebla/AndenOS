@@ -51,14 +51,27 @@ export default function LandingPage() {
             <p className="font-mono text-xs text-dark/50 mt-4">
               Diagnóstico gratuito · Proceso 100% guiado
             </p>
-            <div className="mt-5 flex items-center gap-2">
-              <span style={{ fontFamily: 'Courier New, monospace' }} className="text-xs text-orange font-bold">
-                ★ Primera jurisdicción para agentes de IA
-              </span>
-              <Link href="/agents" style={{ fontFamily: 'Courier New, monospace' }} className="text-xs text-[#6B6B8A] hover:text-orange transition-colors">
-                Registrá tu agente →
-              </Link>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3 mt-6">
+              <div className="flex-1 h-px bg-dark/10" />
+              <span className="font-mono text-xs text-dark/25">o</span>
+              <div className="flex-1 h-px bg-dark/10" />
             </div>
+
+            {/* Agent CTA */}
+            <Link
+              href="/agents"
+              className="mt-4 flex items-center justify-between px-5 py-3 border-2 border-dark bg-dark text-cream hover:bg-[#0D0D1A] transition-colors group"
+            >
+              <div>
+                <span style={{ fontFamily: 'Courier New, monospace' }} className="text-xs text-[#00E5FF] font-bold block mb-0.5">
+                  ★ Primera jurisdicción para agentes de IA
+                </span>
+                <span className="font-mono text-sm font-bold text-cream">Registrá tu agente</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#00E5FF] flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
 
           {/* Hero card — simulated dashboard */}
