@@ -7,9 +7,6 @@ import { TIER_PRICES, TIER_LABELS } from '@/types/agent'
 import { createClient } from '@/lib/supabase/client'
 import { Eye, EyeOff } from 'lucide-react'
 
-function generateAgentId() {
-  return `SF-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}`
-}
 
 export default function AgentRegistroPage() {
   const router = useRouter()
@@ -78,8 +75,6 @@ export default function AgentRegistroPage() {
       setLoading(false)
     }
   }
-
-  const agentId = generateAgentId()
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
