@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
-    const { userId, caso, advisorMode } = session.metadata || {}
+    const { userId, caso, advisorMode, track, tier } = session.metadata || {}
 
     if (!userId) {
       return NextResponse.json({ error: 'No userId in metadata' }, { status: 400 })
@@ -41,6 +41,33 @@ export async function POST(req: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
+
+    // ── Track 2: Agent / Smart Fiduciae ─────────────────────────
+    if (track === 'agent') {
+      const amountPaid = (session.amount_total || 0) / 100
+      const { data: userData } = await supabase.auth.admin.getUserById(userId)
+      const user = userData?.user
+      const founderName = user?.user_metadata?.full_name || 'Founder'
+      const founderEmail = user?.email || ''
+
+      await supabase.from('agent_expedients')
+        .update({ status: 'paid', stripe_session_id: session.id, amount_paid: amountPaid, paid_at: new Date().toISOString() })
+        .eq('user_id', userId)
+
+      await resend.emails.send({
+        from: 'Andén <noreply@anden.tech>',
+        to: 'hello@anden.tech',
+        subject: `Smart Fiduciae — ${founderName} — ${tier?.toUpperCase()} — ${new Date().toLocaleDateString('es-AR')}`,
+        text: `SMART FIDUCIAE\n============================\nFounder: ${founderName}\nEmail: ${founderEmail}\nTier: ${tier}\nMonto: USD ${amountPaid}\nFounding Member: Sí\nFecha: ${new Date().toISOString()}`,
+      })
+      await resend.emails.send({
+        from: 'Andén <noreply@anden.tech>',
+        to: founderEmail,
+        subject: `Tu Smart Fiduciae — Tier ${tier}`,
+        text: `Hola ${founderName},\n\nTu pago fue recibido. El equipo Andén revisará tu expediente y se contactará en las próximas 48hs.\n\nTier: ${tier}\nMonto: USD ${amountPaid}\nFounding Member: Sí ⭐\n\nAndén`,
+      })
+      return NextResponse.json({ received: true })
+    }
 
     // Get user data
     const { data: userData } = await supabase.auth.admin.getUserById(userId)

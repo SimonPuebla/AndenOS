@@ -51,6 +51,14 @@ export default function LandingPage() {
             <p className="font-mono text-xs text-dark/50 mt-4">
               Diagnóstico gratuito · Proceso 100% guiado
             </p>
+            <div className="mt-5 flex items-center gap-2">
+              <span style={{ fontFamily: 'Courier New, monospace' }} className="text-xs text-orange font-bold">
+                ★ Primera jurisdicción para agentes de IA
+              </span>
+              <Link href="/agents" style={{ fontFamily: 'Courier New, monospace' }} className="text-xs text-[#6B6B8A] hover:text-orange transition-colors">
+                Registrá tu agente →
+              </Link>
+            </div>
           </div>
 
           {/* Hero card — simulated dashboard */}

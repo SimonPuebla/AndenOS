@@ -15,6 +15,8 @@ const config: Config = {
         dark: "#1A1A2E",
         "orange-dark": "#E8891F",
         "blue-dark": "#1F2970",
+        cyan: "#00E5FF",
+        "agent-dark": "#0D0D1A",
       },
       fontFamily: {
         mono: ["'Space Mono'", "'Courier New'", "ui-monospace", "monospace"],
@@ -23,6 +25,8 @@ const config: Config = {
       backgroundImage: {
         "grid-pattern":
           "repeating-linear-gradient(0deg, transparent, transparent 31px, #1A1A2E14 31px, #1A1A2E14 32px), repeating-linear-gradient(90deg, transparent, transparent 31px, #1A1A2E14 31px, #1A1A2E14 32px)",
+        "agent-grid":
+          "repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,229,255,0.05) 39px, rgba(0,229,255,0.05) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,229,255,0.05) 39px, rgba(0,229,255,0.05) 40px)",
       },
     },
   },

@@ -32,11 +32,14 @@ export async function middleware(request: NextRequest) {
   try {
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Protect /dashboard — requires auth
-    if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    // Protect /dashboard and /agents/dashboard — requires auth
+    const protectedPaths = ['/dashboard', '/agents/dashboard']
+    if (protectedPaths.some((p) => request.nextUrl.pathname.startsWith(p))) {
       if (!user) {
         const redirectUrl = request.nextUrl.clone()
-        redirectUrl.pathname = '/onboarding/registro'
+        redirectUrl.pathname = request.nextUrl.pathname.startsWith('/agents')
+          ? '/agents/registro'
+          : '/onboarding/registro'
         return NextResponse.redirect(redirectUrl)
       }
     }
@@ -49,5 +52,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: ['/dashboard/:path*', '/agents/dashboard/:path*'],
 }
