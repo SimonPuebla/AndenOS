@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Lock, FileText, CheckSquare, Clock, MessageSquare } from 'lucide-react'
+import { Lock, FileText, CheckSquare, Clock, MessageSquare, User, Zap, Building2, Plus, Trash2, type LucideIcon } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 interface Expediente {
@@ -146,12 +146,32 @@ SALIDA DE FOUNDERS: [A DEFINIR CON ASESOR]
   return docs
 }
 
-const PARALLEL_TASKS = [
-  { key: 'banco', label: 'Abrir cuenta bancaria empresarial', time: 'Semana 2' },
-  { key: 'marca', label: 'Registrar marca / dominio', time: 'Semana 1' },
-  { key: 'tools', label: 'Configurar Stripe, Wise, facturación', time: 'Semana 1' },
-  { key: 'contrato', label: 'Preparar contrato con primer cliente', time: 'Semana 2–3' },
-  { key: 'redes', label: 'Configurar perfiles corporativos', time: 'Semana 1' },
+type Responsible = 'vos' | 'andén' | 'institución'
+
+const RESPONSIBLE_CONFIG: Record<Responsible, { icon: LucideIcon; label: string; className: string }> = {
+  vos: { icon: User, label: 'Vos', className: 'border-dark/30 text-dark bg-dark/5' },
+  'andén': { icon: Zap, label: 'Andén puede gestionarlo', className: 'border-orange text-dark bg-orange/10' },
+  'institución': { icon: Building2, label: 'Institución', className: 'border-dark/20 text-dark/60 bg-dark/5' },
+}
+
+function ResponsibleBadge({ responsible }: { responsible: Responsible }) {
+  const cfg = RESPONSIBLE_CONFIG[responsible]
+  const Icon = cfg.icon
+  return (
+    <span className={`flex items-center gap-1 font-mono text-xs border px-1.5 py-0.5 flex-shrink-0 ${cfg.className}`}>
+      <Icon className="w-3 h-3" />
+      {cfg.label}
+    </span>
+  )
+}
+
+const PARALLEL_TASKS: { key: string; label: string; time: string; responsible: Responsible }[] = [
+  { key: 'banco', label: 'Abrir cuenta bancaria empresarial', time: 'Semana 2', responsible: 'vos' },
+  { key: 'marca', label: 'Registrar marca / dominio', time: 'Semana 1', responsible: 'andén' },
+  { key: 'tools', label: 'Configurar Stripe, Wise, facturación', time: 'Semana 1', responsible: 'vos' },
+  { key: 'contrato', label: 'Preparar contrato con primer cliente', time: 'Semana 2–3', responsible: 'andén' },
+  { key: 'redes', label: 'Configurar perfiles corporativos', time: 'Semana 1', responsible: 'vos' },
+  { key: 'documentos', label: 'Firmar los documentos cuando te los enviemos', time: 'Semana 1–3', responsible: 'vos' },
 ]
 
 function DashboardContent() {
@@ -162,6 +182,40 @@ function DashboardContent() {
   const [expediente, setExpediente] = useState<Expediente | null>(null)
   const [loading, setLoading] = useState(true)
   const [parallelChecked, setParallelChecked] = useState<Record<string, boolean>>({})
+  const [capTableDraft, setCapTableDraft] = useState<{ nombre: string; rol: string; equity: number; contribucion: string; vesting: string }[]>([])
+  const [capTableSaving, setCapTableSaving] = useState(false)
+  const [capTableSaved, setCapTableSaved] = useState(false)
+
+  function addCoFounderRow() {
+    setCapTableDraft((d) => [...d, { nombre: '', rol: 'Co-founder', equity: 0, contribucion: 'Sweat equity', vesting: '4y_1c' }])
+  }
+
+  function updateCoFounder(idx: number, field: string, value: string | number) {
+    setCapTableDraft((d) => d.map((r, i) => i === idx ? { ...r, [field]: value } : r))
+  }
+
+  function removeCoFounder(idx: number) {
+    setCapTableDraft((d) => d.filter((_, i) => i !== idx))
+  }
+
+  async function saveCapTable() {
+    if (!expediente) return
+    setCapTableSaving(true)
+    try {
+      const supabase = createClient()
+      const existingCap = (expediente.onboarding_data?.capTable as unknown[]) || []
+      const newCap = [...existingCap, ...capTableDraft]
+      await supabase
+        .from('expedientes')
+        .update({ onboarding_data: { ...expediente.onboarding_data, capTable: newCap } })
+        .eq('id', expediente.id)
+      setExpediente({ ...expediente, onboarding_data: { ...expediente.onboarding_data, capTable: newCap } })
+      setCapTableDraft([])
+      setCapTableSaved(true)
+    } finally {
+      setCapTableSaving(false)
+    }
+  }
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null)
   const [user, setUser] = useState<{ email?: string; user_metadata?: Record<string, unknown> } | null>(null)
 
@@ -294,6 +348,102 @@ function DashboardContent() {
               </div>
             </div>
 
+            {/* Cap table completion */}
+            {(() => {
+              const data = expediente.onboarding_data || {}
+              const cantidadFounders = data.cantidadFounders as string | undefined
+              const existingCap = (data.capTable as { nombre: string }[]) || []
+              const needsMore = (cantidadFounders === 'dos' && existingCap.length < 2) ||
+                                (cantidadFounders === 'tres_plus' && existingCap.length < 3)
+              if (!needsMore && capTableDraft.length === 0) return null
+              return (
+                <div className="card border-orange">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="label-mono text-dark/50">Cap table — co-founders</div>
+                    {capTableSaved && (
+                      <span className="font-mono text-xs text-green-600 border border-green-300 bg-green-50 px-2 py-0.5">Guardado</span>
+                    )}
+                  </div>
+                  <p className="font-sans text-sm text-dark/60 mb-4">
+                    Completá los datos de tus co-founders para finalizar el cap table.
+                  </p>
+
+                  {/* Existing members */}
+                  {existingCap.map((m, i) => (
+                    <div key={i} className="flex items-center gap-2 p-2 border border-dark/10 bg-dark/5 mb-2">
+                      <div className="w-4 h-4 bg-dark flex items-center justify-center flex-shrink-0">
+                        <span className="text-cream text-xs">✓</span>
+                      </div>
+                      <span className="font-mono text-xs text-dark/60 flex-1">{m.nombre}</span>
+                      <span className="font-mono text-xs text-dark/40">Ya cargado</span>
+                    </div>
+                  ))}
+
+                  {/* Draft rows */}
+                  {capTableDraft.map((row, idx) => (
+                    <div key={idx} className="border border-dark/20 p-3 mb-2 space-y-2">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-mono text-xs text-dark/50">Co-founder {existingCap.length + idx + 1}</span>
+                        <button onClick={() => removeCoFounder(idx)} className="w-6 h-6 border border-dark/20 flex items-center justify-center hover:bg-dark hover:text-cream">
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="col-span-2">
+                          <input
+                            type="text"
+                            value={row.nombre}
+                            onChange={(e) => updateCoFounder(idx, 'nombre', e.target.value)}
+                            placeholder="Nombre completo"
+                            className="input-field text-sm"
+                          />
+                        </div>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            min={0} max={100}
+                            value={row.equity || ''}
+                            onChange={(e) => updateCoFounder(idx, 'equity', Number(e.target.value))}
+                            placeholder="% equity"
+                            className="input-field text-sm pr-6"
+                          />
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-xs text-dark/40">%</span>
+                        </div>
+                        <select
+                          value={row.vesting}
+                          onChange={(e) => updateCoFounder(idx, 'vesting', e.target.value)}
+                          className="input-field text-sm appearance-none cursor-pointer"
+                        >
+                          <option value="4y_1c">4 años, cliff 1 año</option>
+                          <option value="3y_6m">3 años, cliff 6 meses</option>
+                          <option value="sin_vesting">Sin vesting</option>
+                          <option value="a_definir">A definir</option>
+                        </select>
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={addCoFounderRow}
+                      className="flex items-center gap-2 border border-dashed border-dark/30 px-3 py-2 font-mono text-xs text-dark/50 hover:border-orange hover:text-orange transition-colors"
+                    >
+                      <Plus className="w-3 h-3" /> Agregar co-founder
+                    </button>
+                    {capTableDraft.length > 0 && (
+                      <button
+                        onClick={saveCapTable}
+                        disabled={capTableSaving || capTableDraft.some(r => !r.nombre.trim())}
+                        className="flex-1 btn-primary text-sm py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {capTableSaving ? 'Guardando...' : 'Guardar cap table'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )
+            })()}
+
             {/* Documents */}
             <div className="card">
               <div className="label-mono text-dark/50 mb-4">Documentos</div>
@@ -365,9 +515,15 @@ function DashboardContent() {
 
             {/* Parallel actions */}
             <div className="card">
-              <div className="label-mono text-dark/50 mb-2">Mientras esperás</div>
+              <div className="flex items-start justify-between gap-4 mb-2">
+                <div className="label-mono text-dark/50">Tareas pendientes</div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <ResponsibleBadge responsible="vos" />
+                  <ResponsibleBadge responsible="andén" />
+                </div>
+              </div>
               <p className="font-sans text-sm text-dark/60 mb-4">
-                Estas acciones podés hacerlas en paralelo mientras Andén gestiona el proceso legal.
+                Las tareas marcadas con <span className="font-mono text-xs border border-orange bg-orange/10 px-1">Andén</span> podés delegárselas al equipo.
               </p>
               <div className="space-y-2">
                 {PARALLEL_TASKS.map((task) => (
@@ -384,7 +540,10 @@ function DashboardContent() {
                     <span className={`font-sans text-sm flex-1 ${parallelChecked[task.key] ? 'line-through text-dark/40' : 'text-dark'}`}>
                       {task.label}
                     </span>
-                    <span className="font-mono text-xs text-dark/40 flex-shrink-0">{task.time}</span>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="font-mono text-xs text-dark/40">{task.time}</span>
+                      <ResponsibleBadge responsible={task.responsible} />
+                    </div>
                   </div>
                 ))}
               </div>

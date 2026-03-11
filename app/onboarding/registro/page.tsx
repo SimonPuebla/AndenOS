@@ -149,6 +149,7 @@ export default function RegistroPage() {
             empleados: store.empleados,
             ipPreexistente: store.ipPreexistente,
             nombreEmpresa: store.nombreEmpresa,
+            cantidadFounders: store.cantidadFounders,
             capTable: store.capTable,
           },
           payment_status: 'pending',
