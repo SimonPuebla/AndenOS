@@ -2,13 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --cream: #F6F2E6;
-  --orange: #F89A2F;
-  --blue: #2F3993;
+  --cream: #F2EDE3;
+  --lime: #CCDB26;
+  --lime-dark: #A8B41E;
+  --blue: #2B35CC;
   --dark: #1A1A2E;
+  --maroon: #2E0E0E;
 }
 
 * {
@@ -16,22 +18,22 @@
 }
 
 body {
-  background-color: #F6F2E6;
+  background-color: #F2EDE3;
   color: #1A1A2E;
   font-family: Inter, Arial, sans-serif;
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-orange text-dark font-mono font-bold px-6 py-3 border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] hover:shadow-[2px_2px_0px_#1A1A2E] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-100 cursor-pointer inline-block;
+    @apply bg-lime text-dark font-display font-bold uppercase tracking-wide px-6 py-3 border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] hover:shadow-[2px_2px_0px_#1A1A2E] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-100 cursor-pointer inline-block;
   }
 
   .btn-secondary {
-    @apply bg-cream text-dark font-mono font-bold px-6 py-3 border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] hover:shadow-[2px_2px_0px_#1A1A2E] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-100 cursor-pointer inline-block;
+    @apply bg-cream text-dark font-display font-bold uppercase tracking-wide px-6 py-3 border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] hover:shadow-[2px_2px_0px_#1A1A2E] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-100 cursor-pointer inline-block;
   }
 
   .btn-blue {
-    @apply bg-blue text-cream font-mono font-bold px-6 py-3 border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] hover:shadow-[2px_2px_0px_#1A1A2E] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-100 cursor-pointer inline-block;
+    @apply bg-blue text-cream font-display font-bold uppercase tracking-wide px-6 py-3 border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] hover:shadow-[2px_2px_0px_#1A1A2E] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-100 cursor-pointer inline-block;
   }
 
   .card {
@@ -42,12 +44,12 @@ body {
     @apply bg-blue text-cream border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] p-6;
   }
 
-  .card-orange {
-    @apply bg-orange text-dark border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] p-6;
+  .card-lime {
+    @apply bg-lime text-dark border-2 border-dark shadow-[4px_4px_0px_#1A1A2E] p-6;
   }
 
   .input-field {
-    @apply w-full bg-cream border-2 border-dark px-4 py-3 font-sans focus:outline-none focus:border-orange shadow-[2px_2px_0px_#1A1A2E];
+    @apply w-full bg-cream border-2 border-dark px-4 py-3 font-sans focus:outline-none focus:border-blue shadow-[2px_2px_0px_#1A1A2E];
   }
 
   .label-mono {
@@ -55,7 +57,7 @@ body {
   }
 
   .section-title {
-    @apply font-mono text-2xl md:text-3xl font-bold text-dark;
+    @apply font-display text-2xl md:text-3xl font-bold uppercase text-dark;
   }
 
   .pixel-border {
@@ -115,7 +117,7 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F6F2E6;
+  background: #F2EDE3;
   border-left: 1px solid #1A1A2E;
 }
 ::-webkit-scrollbar-thumb {

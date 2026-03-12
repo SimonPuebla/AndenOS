@@ -9,16 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: "#F6F2E6",
+        cream: "#F2EDE3",
         orange: "#F89A2F",
-        blue: "#2F3993",
-        dark: "#1A1A2E",
-        "orange-dark": "#E8891F",
+        lime: "#CCDB26",
+        "lime-dark": "#A8B41E",
+        blue: "#2B35CC",
         "blue-dark": "#1F2970",
+        dark: "#1A1A2E",
+        maroon: "#2E0E0E",
+        "orange-dark": "#E8891F",
         cyan: "#00E5FF",
         "agent-dark": "#0D0D1A",
       },
       fontFamily: {
+        display: ["'Barlow Condensed'", "'Arial Narrow'", "Impact", "ui-sans-serif", "sans-serif"],
         mono: ["'Space Mono'", "'Courier New'", "ui-monospace", "monospace"],
         sans: ["Inter", "ui-sans-serif", "system-ui", "Arial", "sans-serif"],
       },
