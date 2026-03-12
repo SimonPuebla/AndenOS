@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Check, ChevronRight, Building2, Globe, Zap, Shield } from 'lucide-react'
 
 export default function LandingPage() {
@@ -9,10 +10,8 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="border-b-2 border-dark bg-cream sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          {/* Logo — matches the real ANDÉN geometric wordmark proportions */}
-          <div className="font-display font-black text-xl tracking-tight uppercase">
-            ANDÉN
-          </div>
+          {/* Logo */}
+          <Image src="/logo.png" alt="ANDÉN" width={120} height={40} className="h-8 w-auto" priority />
           <div className="flex items-center gap-4">
             <Link href="/onboarding/existente" className="font-mono text-sm hidden md:block hover:text-blue transition-colors">
               Ya tengo empresa
@@ -44,10 +43,10 @@ export default function LandingPage() {
               Zona Franca Digital · Mendoza
             </div>
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-black text-dark uppercase leading-none mb-6">
-              Tu empresa<br />
-              tech,<br />
-              constituida en<br />
-              <span className="text-blue">35 días.</span>
+              Constituye<br />
+              tu empresa en<br />
+              <span className="text-blue">30 días</span><br />
+              sin fricciones.
             </h1>
             <p className="font-sans text-lg text-dark/70 mb-8 max-w-lg leading-relaxed">
               Andén es la infraestructura digital que te guía por todo el proceso:
@@ -287,14 +286,14 @@ export default function LandingPage() {
                 step: '04',
                 title: 'Andén gestiona',
                 desc: 'Nuestro equipo lleva adelante todo el proceso legal. Vos seguís el avance en tiempo real.',
-                time: '35–50 días',
+                time: '30–45 días',
               },
             ].map((item) => (
-              <div key={item.step} className="border-2 border-cream/20 p-6 md:border-r-0 last:border-r-2 hover:border-lime transition-colors">
+              <div key={item.step} className="border-2 border-cream/20 p-6 md:border-r-0 last:border-r-2 hover:border-lime transition-colors flex flex-col">
                 <div className="font-display text-5xl font-black text-lime/40 mb-3">{item.step}</div>
                 <div className="font-display text-xl font-black uppercase text-cream mb-2">{item.title}</div>
-                <p className="font-sans text-sm text-cream/60 leading-relaxed mb-4">{item.desc}</p>
-                <div className="tag bg-maroon border-cream/20 text-cream/50 text-xs">{item.time}</div>
+                <p className="font-sans text-sm text-cream/60 leading-relaxed mb-4 flex-1">{item.desc}</p>
+                <div className="tag bg-maroon border-cream/20 text-cream/50 text-xs mt-auto self-start">{item.time}</div>
               </div>
             ))}
           </div>
@@ -322,6 +321,7 @@ export default function LandingPage() {
               {[
                 'Constitución SAS en IGJ',
                 'Inscripción Zona Franca Digital',
+                'Membresía ZFD 1er año (renovación anual)',
                 'Gestión inscripción LEC',
                 'Founders Agreement',
                 'Todos los documentos legales',
@@ -350,6 +350,7 @@ export default function LandingPage() {
             <ul className="space-y-2 mb-6">
               {[
                 'Todo lo del plan anterior',
+                'Membresía ZFD 1er año (renovación anual)',
                 'Delaware C-Corp (HoldCo)',
                 'Estructura HoldCo / OpCo',
                 'Certificate of Incorporation',
@@ -479,7 +480,7 @@ export default function LandingPage() {
             El momento de construir<br />es ahora.
           </h2>
           <p className="font-sans text-cream/60 mb-8">
-            Una zona franca puede estar en marcha en 35 días. El marco legal existe.
+            Una zona franca puede estar en marcha en 30 días. El marco legal existe.
             La tecnología está lista. Solo falta la decisión.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -496,9 +497,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t-2 border-dark bg-cream">
         <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="font-display font-black text-lg uppercase tracking-tight">
-            ANDÉN
-          </div>
+          <Image src="/logo.png" alt="ANDÉN" width={100} height={32} className="h-7 w-auto" />
           <div className="font-mono text-xs text-dark/40 text-center">
             Andén no es un estudio jurídico. Los servicios legales son provistos por abogados matriculados asociados.
           </div>
